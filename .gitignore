@@ -1,0 +1,5 @@
+debug.txt
+debugcode.txt
+*.bin
+/bin
+/.vscode
