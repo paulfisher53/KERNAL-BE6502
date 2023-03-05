@@ -19,9 +19,10 @@ SysStart:
     jsr LCDClearVideoRAM
     lda #<CONST_MESSAGE_1       ; Display boot message
     ldy #>CONST_MESSAGE_1 
-    jsr LCDPrint
+    jsr LCDPrint    
 
-    jmp SysStart                ; Loop
+@loop
+    jmp @loop                   ; Loop
 
 RAMTest:
     lda #0                      ; Clear A
@@ -34,7 +35,12 @@ RAMTest:
     bne @loop
 
     tay                         ; Clear Y
+.if CONFIG_EMULATOR == 0
     lda #3                      ; Set RAM Test Pointer (High Byte)
+.endif 
+.if CONFIG_EMULATOR == 1
+    lda #$3E                    ; Set RAM Test Pointer (High Byte)
+.endif    
     sta VAR_RAM_TEST_PTR+1
 
 @ramloopouter

@@ -28,3 +28,7 @@ VAR_LCD_SCREEN = $460           ; LCD Screen Memory - 32 (2 rows, 16 columns)
 
 ; CONSTANTS
 CONST_WAIT = $18                ; Sleep multiplicator
+CONST_RAM_START = $0200         ; Unused RAM Start Location
+
+; BASIC VARIABLES
+TXTTAB = $02B                    ; Start of BASIC program text (2 bytes)

@@ -12,3 +12,4 @@ VIAConfigureDDR:
     stx DDRA                    ; Configure DDRA from X param
 
     rts
+    
