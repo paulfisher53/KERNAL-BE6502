@@ -1,0 +1,19 @@
+{
+  "name": "kernal-be6502",
+  "version": "0.0.1",
+  "description": "KERNAL like operating system for the Ben Eater 6502 computer.",
+  "scripts": {
+    "build": "dotnet /Users/paulf/Documents/retroassembler/retroassembler.dll ./src/kernal/kernal.s ./bin/kernal.bin",
+    "emulator": "./emulator.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paulfisher53/KERNAL-BE6502.git"
+  },
+  "author": "Paul Fisher",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/paulfisher53/KERNAL-BE6502/issues"
+  },
+  "homepage": "https://github.com/paulfisher53/KERNAL-BE6502#readme"
+}
