@@ -15,11 +15,11 @@ LCDClearVideoRAM:
     lda #$20
 
 @loop:
-    sta VAR_LCD_SCREEN,Y         ; Store A (space char) at pos Y
+    sta LCD_SCREEN,Y         ; Store A (space char) at pos Y
     dey
     bne @loop
 
-    sta VAR_LCD_SCREEN           ; Write last location manually
+    sta LCD_SCREEN           ; Write last location manually
 
     pla                         ; Restore Y
     tay
@@ -50,22 +50,22 @@ LCDPrint:
 ; @returns: none
 ; @destroys: A,X,Y
 LCDPrintWithOffset:
-    sta VAR_LCD_STR_BUFF
-    sty VAR_LCD_STR_BUFF+1
-    stx VAR_LCD_STR_OFFSET
+    sta LCD_STR_BUFF
+    sty LCD_STR_BUFF+1
+    stx LCD_STR_OFFSET
     ldy #0
 
 @loop:
     clc
     
     tya
-    adc VAR_LCD_STR_OFFSET      ; Add offset to loop iterator
+    adc LCD_STR_OFFSET      ; Add offset to loop iterator
     tax                         ; and store in X
 
-    lda (VAR_LCD_STR_BUFF),Y    ; Load character at pos Y
+    lda (LCD_STR_BUFF),Y    ; Load character at pos Y
     beq @return                 ; If we reach 0x00 exit loop
 
-    sta VAR_LCD_SCREEN,X         ; Store character to video memory
+    sta LCD_SCREEN,X         ; Store character to video memory
     iny
 
     jmp @loop
@@ -122,7 +122,7 @@ LCDSetCursor2:
 
 ; LCDRender
 ; @description: Renders video memory to LCD
-; @param VAR_LCD_SCREEN: Needs to be loaded with characters 
+; @param LCD_SCREEN: Needs to be loaded with characters 
 ; @returns: none
 ; @destroys: A,X,Y
 LCDRender:
@@ -131,7 +131,7 @@ LCDRender:
     ldx #0
 
 @writechar:
-    lda VAR_LCD_SCREEN,X         ; Load character from memory at pos X
+    lda LCD_SCREEN,X         ; Load character from memory at pos X
     
     cpx #$10                    ; If x = 16 write next line
     beq @nextline
