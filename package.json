@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "KERNAL like operating system for the Ben Eater 6502 computer.",
   "scripts": {
-    "build": "dotnet /Users/paulf/Documents/retroassembler/retroassembler.dll ./src/kernal/kernal.s ./bin/kernal.bin -x",
+    "build": "dotnet /Users/paulf/Documents/retroassembler/retroassembler.dll ./src/kernal.s ./bin/kernal.bin -x",
     "emulator": "./emulator.sh"
   },
   "repository": {

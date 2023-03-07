@@ -127,11 +127,12 @@ public class EaterEmulator extends JFrame implements ActionListener {
 		options.updateSwingComponents();
         options.applySwingValues();
 
-		rom.setROMArray(ROMLoader.readROM(new File("/Users/paulf/Documents/asm/src/kernal.bin")));	        
+		rom.setROMArray(ROMLoader.readROM(new File("/Users/paulf/Documents/asm/bin/kernal.bin")));	        
 		GraphicsPanel.requestFocus();
 		GraphicsPanel.romPageString = EaterEmulator.rom.ROMString.substring(GraphicsPanel.romPage*960,(GraphicsPanel.romPage+1)*960);
 		cpu.reset();
 		lcd.setVisible(true);
+		gpu.setVisible(true);
 		EaterEmulator.clockState = true;
 	}
 

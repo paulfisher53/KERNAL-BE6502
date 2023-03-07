@@ -28,7 +28,7 @@ SysStart:
     jsr LCDPrint    
 
     cli                         ; Enable interrupts
-    jmp ($A000)                 ; Goto BASIC
+    //jmp ($A000)                 ; Goto BASIC
 
 @loop
     jmp @loop                   ; Loop
@@ -56,7 +56,7 @@ UserVectors:
 	rts
 
 VECTOR_TABLE:
-    .word Keyinterrupt,Breakpoint,NMIHandler
+    .word EditorKeyInterrupt,Breakpoint,NMIHandler
 VECTOR_TABLE_END:
 
 RAMTest:
