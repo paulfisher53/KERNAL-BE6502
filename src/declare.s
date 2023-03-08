@@ -45,17 +45,24 @@ LCD_STR_OFFSET = $FD            ; LCD String Offset
 
 ; SCREEN MEMORY
 VGA_SCREEN = $400               ; VGA Screen Memory - 96 bytes (8 rows, 12 columns) video matrix locations addressed horizontally, then vertically
-LCD_SCREEN = $460               ; LCD Screen Memory - 32 bytes (2 rows, 16 columns)
-VRAM = $2000                    ; Video memory (100x75)
+VGA_COLORS = $460               ; VGA Color Memory - 96 bytes (8 rows, 12 columns)
+LCD_SCREEN = $4C0               ; LCD Screen Memory - 32 bytes (2 rows, 16 columns)
+
+; VGA
+VGA_CHAR = $7E8                 ; ASCII character to print
+VGA_ROW = $F9                   ; Current VGA row (2 bytes)
+VGA_CHAR_MAP = $F7              ; Current character map (2 bytes)
+VGA_MAP_ROW = $7ED              ; Character map row
+VGA_COL = $7EE                  ; Current VGA column
+
+VGA_PIXELS = $2000              ; VGA pixel memory (100x75)
 
 ; CONSTANTS
 CONST_WAIT = $18                ; Sleep multiplicator
 CONST_RAM_START = $0200         ; Unused RAM Start Location
 CONST_LLEN = 12                 ; Screen Columns (Single line mode)
 CONST_NLINES = 8                ; Screen Rows
+CONST_PIXELS = 1024             ; Pixels in a 8x8 character row
 
 ; BASIC VARIABLES
 TXTTAB = $02B                    ; Start of BASIC program text (2 bytes)
-
-VID_PAGE = $60
-CONST_PIXELS = 1024

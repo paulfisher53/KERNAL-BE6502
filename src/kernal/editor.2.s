@@ -15,7 +15,7 @@ EditorClearLine:
     ldy #CONST_LLEN-1    
     jsr EditorSetPointer    
 @clearcolumn:
-    lda #$2B
+    lda #$41
     sta (ROW_POINTER),Y
     jsr VGAPrintChar
     dey
