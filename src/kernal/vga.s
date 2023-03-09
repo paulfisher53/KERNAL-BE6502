@@ -19,6 +19,24 @@ VGA_LINES:
     .byte >VLINZ6
     .byte >VLINZ7
 
+COLOR_MAP:
+    .byte %00000000 // 0 - Black
+    .byte %00111111 // 1 - White
+    .byte %00100101 // 2 - Red
+    .byte %00101111 // 3 - Cyan
+    .byte %00100110 // 4 - Violet
+    .byte %00011001 // 5 - Green    
+    .byte %00010111 // 6 - Blue
+    .byte %00111101 // 7 - Yellow 
+    .byte %00100100 // 8 - Orange 
+    .byte %00010100 // 9 - Brown 
+    .byte %00110101 // 10 - Light Red
+    .byte %00010101 // 11 - Dark Grey 
+    .byte %00101010 // 12 - Grey  
+    .byte %00101110 // 13 - Light Green    
+    .byte %00101011 // 14 - Light Blue 
+    .byte %00101010 // 15 - Light Grey    
+
 VGAPrintChar:
     
     sta VGA_CHAR
@@ -32,10 +50,11 @@ VGAPrintChar:
     asl
     asl
     asl    
+    adc #2
     sta VGA_COL
     tay
     
-    lda #$3F
+    lda COLOR_MAP+14
     sta $56
 
     lda VGA_LINES,X
@@ -108,7 +127,6 @@ VGAPrintCharRow:
     clc
     lda VGA_CHAR  
     sbc #$60
-
 @printrows    
     asl  
     asl
@@ -140,116 +158,31 @@ VGAPrintCharRow:
     rts
 
 VGAPrintCharMap:    
-    jsr VGACol1
-    iny
-    jsr VGACol2
-    iny
-    jsr VGACol3
-    iny
-    jsr VGACol4
-    iny
-    jsr VGACol5
-    iny
-    jsr VGACol6
-    iny
-    jsr VGACol7
-    iny
-    jsr VGACol8
-    iny
-    rts
+    txa
+    pha
 
-VGACol1:
+    lda #$8    
+    tax
+
+    clc
     lda VGA_MAP_ROW
-    and #PIXEL_COL1
-    beq @black  
-    lda $56	
+@loop        
+    asl
+    bcs @pixel
+    pha
+    lda COLOR_MAP+6
     jmp @set
-@black:
-    lda #$00
+@pixel:
+    pha
+    lda $56
 @set:
     sta (VGA_ROW),Y
-    rts
+    iny
+    pla
+    dex
+    bne @loop
 
-VGACol2:
-    lda VGA_MAP_ROW
-    and #PIXEL_COL2
-    beq @black  
-    lda $56	
-    jmp @set
-@black:
-    lda #$00
-@set:
-    sta (VGA_ROW),Y
-    rts
+    pla
+    tax
 
-VGACol3:
-    lda VGA_MAP_ROW
-    and #PIXEL_COL3
-    beq @black  
-    lda $56	
-    jmp @set
-@black:
-    lda #$00
-@set:
-    sta (VGA_ROW),Y
-    rts
-
-VGACol4:
-    lda VGA_MAP_ROW
-    and #PIXEL_COL4
-    beq @black  
-    lda $56	
-    jmp @set
-@black:
-    lda #$00
-@set:
-    sta (VGA_ROW),Y
-    rts
-
-VGACol5:
-    lda VGA_MAP_ROW
-    and #PIXEL_COL5
-    beq @black  
-    lda $56	
-    jmp @set
-@black:
-    lda #$00
-@set:
-    sta (VGA_ROW),Y
-    rts
-
-VGACol6:
-    lda VGA_MAP_ROW
-    and #PIXEL_COL6
-    beq @black  
-    lda $56	
-    jmp @set
-@black:
-    lda #$00
-@set:
-    sta (VGA_ROW),Y
-    rts
-
-VGACol7:
-    lda VGA_MAP_ROW
-    and #PIXEL_COL7
-    beq @black  
-    lda $56	
-    jmp @set
-@black:
-    lda #$00
-@set:
-    sta (VGA_ROW),Y
-    rts
-
-VGACol8:
-    lda VGA_MAP_ROW
-    and #PIXEL_COL8
-    beq @black  
-    lda $56	
-    jmp @set
-@black:
-    lda #$00
-@set:
-    sta (VGA_ROW),Y
     rts

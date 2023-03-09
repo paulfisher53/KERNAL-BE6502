@@ -32,7 +32,8 @@ public class RAM {
 		if(Short.toUnsignedInt(address) > 0x3FFF)
 			return;
 		array[Short.toUnsignedInt(address)] = data;
-		RAMString = this.toString(8, true);
+		if(EaterEmulator.showMemory)
+			RAMString = this.toString(8, true);
 	}
 	
 	public String toString(int bytesPerLine, boolean addresses) {

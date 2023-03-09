@@ -14,14 +14,6 @@ RS = %00100000
 
 ; VGA FLAGS
 ASCII_CHARMAP           = %11100000
-PIXEL_COL1              = %10000000
-PIXEL_COL2              = %01000000
-PIXEL_COL3              = %00100000
-PIXEL_COL4              = %00010000
-PIXEL_COL5              = %00001000
-PIXEL_COL6              = %00000100
-PIXEL_COL7              = %00000010
-PIXEL_COL8              = %00000001
 
 MEM_TOP = $37                   ; Highest location in memory
 MEM_START = $281                ; Start of memory (2 bytes)

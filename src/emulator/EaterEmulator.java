@@ -32,7 +32,8 @@ public class EaterEmulator extends JFrame implements ActionListener {
 	public static boolean slowerClock = false;
 	public static boolean running = false;
 	public static boolean keyboardMode = false;			//False = controls (default), True = keyboard
-	
+	public static boolean showMemory = false;
+
 	//Emulator Things
 	public static EaterEmulator emu;
 	public static RAM ram = new RAM();
@@ -129,7 +130,8 @@ public class EaterEmulator extends JFrame implements ActionListener {
 
 		rom.setROMArray(ROMLoader.readROM(new File("/Users/paulf/Documents/asm/bin/kernal.bin")));	        
 		GraphicsPanel.requestFocus();
-		GraphicsPanel.romPageString = EaterEmulator.rom.ROMString.substring(GraphicsPanel.romPage*960,(GraphicsPanel.romPage+1)*960);
+		if(EaterEmulator.showMemory == true)
+			GraphicsPanel.romPageString = EaterEmulator.rom.ROMString.substring(GraphicsPanel.romPage*960,(GraphicsPanel.romPage+1)*960);
 		cpu.reset();
 		lcd.setVisible(true);
 		gpu.setVisible(true);
@@ -138,7 +140,7 @@ public class EaterEmulator extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource().equals(ROMopenButton)) {
+		if (e.getSource().equals(ROMopenButton)) {			
 			fc.setFile("");
 			fc.setMode(FileDialog.LOAD);
 	        fc.setVisible(true);
@@ -147,7 +149,8 @@ public class EaterEmulator extends JFrame implements ActionListener {
 	        	rom.setROMArray(ROMLoader.readROM(new File(fc.getDirectory()+fc.getFile())));
 	        
 	        GraphicsPanel.requestFocus();
-	        GraphicsPanel.romPageString = EaterEmulator.rom.ROMString.substring(GraphicsPanel.romPage*960,(GraphicsPanel.romPage+1)*960);
+	        if(EaterEmulator.showMemory == true)
+				GraphicsPanel.romPageString = EaterEmulator.rom.ROMString.substring(GraphicsPanel.romPage*960,(GraphicsPanel.romPage+1)*960);
 	        cpu.reset();
 		} else if (e.getSource().equals(RAMopenButton)) {
 			fc.setFile("");
@@ -158,7 +161,8 @@ public class EaterEmulator extends JFrame implements ActionListener {
 	        	ram.setRAMArray(ROMLoader.readROM(new File(fc.getDirectory()+fc.getFile())));
 
 	        GraphicsPanel.requestFocus();
-	        GraphicsPanel.ramPageString = EaterEmulator.ram.RAMString.substring(GraphicsPanel.ramPage*960,(GraphicsPanel.ramPage+1)*960);
+	        if(EaterEmulator.showMemory == true)
+				GraphicsPanel.ramPageString = EaterEmulator.ram.RAMString.substring(GraphicsPanel.ramPage*960,(GraphicsPanel.ramPage+1)*960);
 			cpu.reset();
 		} else if (e.getSource().equals(ShowLCDButton)) {
 			lcd.setVisible(!lcd.isVisible());

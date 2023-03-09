@@ -70,12 +70,7 @@ RAMTest:
     bne @loop
 
     tay                         ; Clear Y
-.if CONFIG_EMULATOR == 0
-    lda #3                      ; Set RAM Test Pointer (High Byte)
-.endif 
-.if CONFIG_EMULATOR == 1
-    lda #$3E                    ; Set RAM Test Pointer (High Byte)
-.endif    
+    lda #3                      ; Set RAM Test Pointer (High Byte)  
     sta TEMP0+1
 
 @ramloopouter

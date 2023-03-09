@@ -207,7 +207,9 @@ public class GPU extends JFrame implements ActionListener {
                             byte red = (byte)((pixelData & 0b00110000) >> 4);
                             byte green = (byte)((pixelData & 0b00001100) >> 2);
                             byte blue = (byte)((pixelData & 0b00000011) >> 0);
-
+                            // 00 55 AA FF
+                            // 00 01 10 11
+                            // 0 85 170 255
                             Color c = Color.decode("#"+
                                 Integer.toHexString(red*5)+Integer.toHexString(red*5)+
                                 Integer.toHexString(green*5)+Integer.toHexString(green*5)+

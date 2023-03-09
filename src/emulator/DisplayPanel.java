@@ -37,9 +37,11 @@ public class DisplayPanel extends JPanel implements ActionListener, KeyListener 
 			System.out.println("Error loading Courier Font!");
 		}
 		
-		romPageString = EaterEmulator.rom.ROMString.substring(romPage*960,(romPage+1)*960);
-		ramPageString = EaterEmulator.ram.RAMString.substring(ramPage*960,(ramPage+1)*960);
-		
+		if(EaterEmulator.showMemory == true){
+			romPageString = EaterEmulator.rom.ROMString.substring(romPage*960,(romPage+1)*960);
+			ramPageString = EaterEmulator.ram.RAMString.substring(ramPage*960,(ramPage+1)*960);
+		}
+
 		this.setFocusable(true);
 	    this.requestFocus();
 		this.addKeyListener(this);
@@ -156,7 +158,8 @@ public class DisplayPanel extends JPanel implements ActionListener, KeyListener 
 
 			EaterEmulator.running = true;
 			
-			ramPageString = EaterEmulator.ram.RAMString.substring(ramPage*960,(ramPage+1)*960);
+			if(EaterEmulator.showMemory == true)
+				ramPageString = EaterEmulator.ram.RAMString.substring(ramPage*960,(ramPage+1)*960);
 			EaterEmulator.ROMopenButton.setBounds(rightAlignHelper-150, 15, 125, 25);
 			EaterEmulator.RAMopenButton.setBounds(rightAlignHelper-150, 45, 125, 25);
 			EaterEmulator.ShowLCDButton.setBounds(rightAlignHelper-300, 15, 125, 25);
