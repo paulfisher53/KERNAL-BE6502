@@ -15,7 +15,7 @@ LCDClearVideoRAM:
     lda #$20
 
 @loop:
-    sta LCD_SCREEN,Y         ; Store A (space char) at pos Y
+    sta LCD_SCREEN,y         ; Store A (space char) at pos Y
     dey
     bne @loop
 
@@ -62,10 +62,10 @@ LCDPrintWithOffset:
     adc LCD_STR_OFFSET      ; Add offset to loop iterator
     tax                         ; and store in X
 
-    lda (LCD_STR_BUFF),Y    ; Load character at pos Y
+    lda (LCD_STR_BUFF),y    ; Load character at pos Y
     beq @return                 ; If we reach 0x00 exit loop
 
-    sta LCD_SCREEN,X         ; Store character to video memory
+    sta LCD_SCREEN,x         ; Store character to video memory
     iny
 
     jmp @loop
@@ -131,7 +131,7 @@ LCDRender:
     ldx #0
 
 @writechar:
-    lda LCD_SCREEN,X         ; Load character from memory at pos X
+    lda LCD_SCREEN,x         ; Load character from memory at pos X
     
     cpx #$10                    ; If x = 16 write next line
     beq @nextline

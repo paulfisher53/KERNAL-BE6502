@@ -25,6 +25,7 @@ public class EaterEmulator extends JFrame implements ActionListener {
 	public static JButton keyboardButton= new JButton("Keyboard Mode");
 
 	//Clock Stuff
+	public static Thread slowClock;
 	public static Thread clockThread;
 	public static boolean clockState = false;
 	public static int clocks = 0;
@@ -114,6 +115,16 @@ public class EaterEmulator extends JFrame implements ActionListener {
 	        }
 	    });
 		clockThread.start();
+
+		slowClock = new Thread(() -> {
+			while(true){
+				try {
+					Thread.sleep(30);
+				} catch (InterruptedException e) {e.printStackTrace();}
+				EaterEmulator.cpu.interruptRequested = true;
+			}
+		});
+		slowClock.start();
 		
 		//Final Setup
 		GraphicsPanel.setVisible(true);

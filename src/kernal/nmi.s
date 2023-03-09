@@ -6,7 +6,7 @@ NMIVector:
 
 NMIHandler:
 
-Breakpoint:
+NMIBreakpoint:
     jsr RestoreVectors          ; Restore vectors
-	jsr ScreenInit              ; Restore screen
+	jsr EditorInit              ; Restore editor
 	jmp ($A002)                 ; Run BASIC

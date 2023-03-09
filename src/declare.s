@@ -12,41 +12,76 @@ E  = %10000000
 RW = %01000000
 RS = %00100000
 
-; VGA FLAGS
-ASCII_CHARMAP           = %11100000
+; ASCII MASK
+ASCII_MASK = %11100000
 
-MEM_TOP = $37                   ; Highest location in memory
-MEM_START = $281                ; Start of memory (2 bytes)
-SCREEN_BASE = $288              ; Base location of screen (top)
-ROW_POINTER = $D1               ; Row pointer (2 bytes)
-COL_POINTER = $D3               ; Column pointer
-LINE_FLAGS = $D9                ; Line flags and endspace (9 bytes)
+; $0000-$00FF
+; PAGE 0
+; Zero page addressing
+TXTTAB = $002B                  ; Start of BASIC program text (2 bytes)
+MEM_TOP = $0037                 ; Highest location in memory
+INPUT_DEVICE = $0099            ; Default input device (Set to 0 for the keyboard)
+OUTPUT_DEVICE = $009A           ; Default output device (Set to 3 for the screen)
+TEMP0 = $00C1                   ; 2 bytes
+TEMP2 = $00C3                   ; 2 bytes
+BLINK_ENABLED = $00CC           ; Blink enabled flag
+BLINK_TIMER = $00CD             ; Cursor blink timer
+CURSOR_CHAR = $00CE             ; Character under the cursor
+BLINK_FLAG = $00CF              ; Cursor blink flag
+ROW_POINTER = $00D1             ; Row pointer (2 bytes)
+COL_POINTER = $00D3             ; Column pointer
+MAX_LINE_LEN = $00D5            ; Max length of screen line
+CURSOR_ROW = $00D6              ; Current cursor row pointer
+LINE_FLAGS = $00D9              ; Line flags and endspace / editor temp storage (9 bytes)
+COLOR_POINTER = $00F3           ; Pointer to screen color
+VGA_CHAR_MAP = $00F7            ; Current character map (2 bytes)
+VGA_ROW_POINTER = $00F9         ; Current VGA row (2 bytes)
+LCD_STR_BUFF = $00FB            ; LCD String Buffer (2 bytes)
+LCD_STR_OFFSET = $00FD          ; LCD String Offset
 
-; TEMP VARIABLES
-TEMP0 = $C1                     ; 2 bytes
-TEMP2 = $C3                     ; 2 bytes
+; $0100-$01FF
+; PAGE 1
+; Enhanced zero page (contains the stack)
 
-; VECTORS AND INDIRECTS (USER)
-VIRQ = $314                     ; Interrupt service routine (2 bytes)
-VBRK = $316                     ; BRK interrupts routine (2 bytes)
-VNMI = $318                     ; Non-maskable interrupts routine (2 bytes)
+; $0200-$02FF
+; PAGE 2
+; KERNAL and BASIC pointers
+MEM_START = $0281               ; Start of memory (2 bytes)
+TEXT_COLOR = $0286              ; Current text color
+CURSOR_COLOR = $0287            ; Color of character under cursor
+SCREEN_BASE = $0288             ; Base location of screen (top)
+MAX_KEY_BUFFER = $0289          ; Maximum keyboard buffer size
+KEY_REPEAT_TIMER = $028B        ; Key repeat delay counter
+KEY_REPEAT_DELAY = $028C        ; Time before a held key is repeated
+KEY_LOGIC = $028F               ; Vector to keyboard table setup routine (2 bytes)
+MODE = $0291                    ; Allow/disallow switching character sets with a key press
+VGA_CHAR = $02A7                ; ASCII character to print
+VGA_MAP_ROW = $02A8             ; Character map row
+VGA_COL = $02A9                 ; Current VGA column
+VGA_ROW = $02AA                 ; Current VGA row
+VGA_COLOR = $02AB               ; Current VGA text color
 
-; LCD VARIABLES
-LCD_STR_BUFF = $FB              ; LCD String Buffer (2 bytes)
-LCD_STR_OFFSET = $FD            ; LCD String Offset
+; $0300-$03FF
+; PAGE 3
+; KERNAL and BASIC pointers
+VIRQ = $0314                    ; Interrupt service routine (2 bytes)
+VBRK = $0316                    ; BRK interrupts routine (2 bytes)
+VNMI = $0318                    ; Non-maskable interrupts routine (2 bytes)
 
-; SCREEN MEMORY
-VGA_SCREEN = $400               ; VGA Screen Memory - 96 bytes (8 rows, 12 columns) video matrix locations addressed horizontally, then vertically
-VGA_COLORS = $460               ; VGA Color Memory - 96 bytes (8 rows, 12 columns)
-LCD_SCREEN = $4C0               ; LCD Screen Memory - 32 bytes (2 rows, 16 columns)
+; $0400-$07FF
+; PAGE 4 - PAGE 7
+; Screen and LCD memory
+VGA_SCREEN = $0400               ; VGA Screen Memory - 96 bytes (8 rows, 12 columns) video matrix locations addressed horizontally, then vertically
+LCD_SCREEN = $04C0               ; LCD Screen Memory - 32 bytes (2 rows, 16 columns)
+VGA_COLORS = $0500               ; VGA Color Memory - 96 bytes (8 rows, 12 columns)
 
-; VGA
-VGA_CHAR = $7E8                 ; ASCII character to print
-VGA_ROW = $F9                   ; Current VGA row (2 bytes)
-VGA_CHAR_MAP = $F7              ; Current character map (2 bytes)
-VGA_MAP_ROW = $7ED              ; Character map row
-VGA_COL = $7EE                  ; Current VGA column
+; $0800-$1FFF
+; PAGE 8 - PAGE 31
+; Free memory (6143 bytes)
 
+; $2000-$3FFF
+; PAGE 32 - 64
+; VGA memory
 VGA_PIXELS = $2000              ; VGA pixel memory (100x75)
 
 ; CONSTANTS
@@ -55,6 +90,3 @@ CONST_RAM_START = $0200         ; Unused RAM Start Location
 CONST_LLEN = 12                 ; Screen Columns (Single line mode)
 CONST_NLINES = 8                ; Screen Rows
 CONST_PIXELS = 1024             ; Pixels in a 8x8 character row
-
-; BASIC VARIABLES
-TXTTAB = $02B                    ; Start of BASIC program text (2 bytes)

@@ -39,36 +39,40 @@ COLOR_MAP:
 
 VGAPrintChar:
     
+    txa
+    pha          
+
+    lda #$00
+    sta VGA_ROW_POINTER
+    ldx VGA_ROW
+    lda VGA_LINES,x
+    sta VGA_ROW_POINTER + 1    
+
+    lda (ROW_POINTER),y
     sta VGA_CHAR
 
-    txa
-    pha  
-
+    lda (COLOR_POINTER),y
+    tax
+    lda COLOR_MAP,X
+    sta VGA_COLOR 
+    
     tya
-    pha  
+    pha 
 
     asl
     asl
     asl    
     adc #2
     sta VGA_COL
-    tay
-    
-    lda COLOR_MAP+14
-    sta $56
-
-    lda VGA_LINES,X
-    sta VGA_ROW + 1
-    lda #$00
-    sta VGA_ROW
+    tay            
 
     jsr VGAPrintCharRow
 
     pla
     tay
-
     pla
     tax
+
     rts
 
 VGANextRow:
@@ -76,30 +80,42 @@ VGANextRow:
     txa
     tay
     clc
-    lda VGA_ROW
+    lda VGA_ROW_POINTER
     adc #$80
-    sta VGA_ROW
-    lda VGA_ROW + 1
+    sta VGA_ROW_POINTER
+    lda VGA_ROW_POINTER + 1
     adc #$00
-    sta VGA_ROW + 1                
-    lda (VGA_CHAR_MAP),Y 
+    sta VGA_ROW_POINTER + 1                
+    lda (VGA_CHAR_MAP),y 
     sta VGA_MAP_ROW
     ldy VGA_COL     
     rts
 
 VGAPrintCharRow:
     lda VGA_CHAR
-    and #ASCII_CHARMAP
+    and #ASCII_MASK
     cmp #%00100000
     beq @map1
     lda VGA_CHAR
-    and #ASCII_CHARMAP
+    and #ASCII_MASK
     cmp #%01000000
     beq @map2
     lda VGA_CHAR
-    and #ASCII_CHARMAP
-    cmp #%10000000
+    and #ASCII_MASK
+    cmp #%01100000
     beq @map3
+    lda VGA_CHAR
+    and #ASCII_MASK
+    cmp #%10100000
+    beq @map4
+    lda VGA_CHAR
+    and #ASCII_MASK
+    cmp #%11000000
+    beq @map5
+    lda VGA_CHAR
+    and #ASCII_MASK
+    cmp #%11100000
+    beq @map6
 
 @map1
     lda #<charmap1
@@ -127,15 +143,42 @@ VGAPrintCharRow:
     clc
     lda VGA_CHAR  
     sbc #$60
+    jmp @printrows
+@map4
+    lda #<charmap4
+    sta VGA_CHAR_MAP
+    lda #>charmap4
+    sta VGA_CHAR_MAP+1
+    clc
+    lda VGA_CHAR  
+    sbc #$A0
+    jmp @printrows
+@map5
+    lda #<charmap5
+    sta VGA_CHAR_MAP
+    lda #>charmap5
+    sta VGA_CHAR_MAP+1
+    clc
+    lda VGA_CHAR  
+    sbc #$C0
+    jmp @printrows
+@map6
+    lda #<charmap6
+    sta VGA_CHAR_MAP
+    lda #>charmap6
+    sta VGA_CHAR_MAP+1
+    clc
+    lda VGA_CHAR  
+    sbc #$E0
 @printrows    
     asl  
     asl
     asl    
     clc
-    adc #$07
+    adc #$08
     tax               
     tay
-    lda (VGA_CHAR_MAP),Y  
+    lda (VGA_CHAR_MAP),y  
     sta VGA_MAP_ROW    
     ldy VGA_COL
 
@@ -174,9 +217,9 @@ VGAPrintCharMap:
     jmp @set
 @pixel:
     pha
-    lda $56
+    lda VGA_COLOR
 @set:
-    sta (VGA_ROW),Y
+    sta (VGA_ROW_POINTER),y
     iny
     pla
     dex

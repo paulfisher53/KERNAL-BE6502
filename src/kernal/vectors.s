@@ -1,9 +1,10 @@
 .lib "VECTORS"
 
-    .org $ff87
+    .org $FF87
     jmp RAMTest
 
-    .org $fffc
+    .org $FFFA
+    .word NMIVector
     .word SysStart
-    .word 0000
+    .word EditorInterrupt
     

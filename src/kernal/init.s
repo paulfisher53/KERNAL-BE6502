@@ -19,18 +19,22 @@ SysStart:
     
     jsr RAMTest                 ; Test the RAM and find RAM end
     jsr RestoreVectors          ; Set up vectors
-    jsr ScreenInit              ; Init screen - TODO replace with global vector
-
+    jsr EditorInit              ; Init editor - TODO replace with global vector
 
     jsr LCDClearVideoRAM
     lda #<CONST_MESSAGE_1       ; Display boot message
     ldy #>CONST_MESSAGE_1 
     jsr LCDPrint    
 
+    ldx #$E
+    lda #$41
+    jsr EditorDisplayCharacter
+
     cli                         ; Enable interrupts
     //jmp ($A000)                 ; Goto BASIC
 
 @loop
+    nop
     jmp @loop                   ; Loop
 
 ; Restore kernal vectors (system)
@@ -45,52 +49,52 @@ UserVectors:
 	sty TEMP2+1
 	ldy #VECTOR_TABLE_END-VECTOR_TABLE-1
 @readvector:	
-    lda VIRQ,Y                  ; Read vector byte from vectors (user)
+    lda VIRQ,y                  ; Read vector byte from vectors (user)
 	bcs @savevector             ; Save if a byte was read
-	lda (TEMP2),Y               ; or load from vectors (system)
+	lda (TEMP2),y               ; or load from vectors (system)
 @savevector	
-    sta (TEMP2),Y               ; Save byte to X Y
-	sta VIRQ,Y                  ; Save byte to vector
+    sta (TEMP2),y               ; Save byte to X Y
+	sta VIRQ,y                  ; Save byte to vector
 	dey
 	bpl @readvector             ; Loop until finished
 	rts
 
 VECTOR_TABLE:
-    .word EditorKeyInterrupt,Breakpoint,NMIHandler
+    .word EditorInterrupt,NMIBreakpoint,NMIHandler
 VECTOR_TABLE_END:
 
 RAMTest:
     lda #0                      ; Clear A
     tay                         ; Clear Index
 @loop
-    sta $0000,Y                 ; Clear Page 0
-    sta $0200,Y                 ; Clear Page 2
-    sta $0300,Y                 ; Clear Page 3
+    sta $0000,y                 ; Clear Page 0
+    sta $0200,y                 ; Clear Page 2
+    sta $0300,y                 ; Clear Page 3
     iny
     bne @loop
 
     tay                         ; Clear Y
-    lda #3                      ; Set RAM Test Pointer (High Byte)  
+    lda #8                      ; Set RAM Test Pointer (High Byte)  
     sta TEMP0+1
 
 @ramloopouter
     inc TEMP0+1      ; Move the pointer through memory
 @ramloopinner
-    lda (TEMP0),Y    ; Save data to X
+    lda (TEMP0),y    ; Save data to X
     tax
 
     lda #$55                    ; Do a $55,$AA test
-    sta (TEMP0),Y
-    cmp (TEMP0),Y
+    sta (TEMP0),y
+    cmp (TEMP0),y
     bne @save
     
     rol A
-    sta (TEMP0),Y
-    cmp (TEMP0),Y
+    sta (TEMP0),y
+    cmp (TEMP0),y
     bne @save
     
     tax                         ; Restore old data
-    sta (TEMP0),Y
+    sta (TEMP0),y
 
     iny
     bne @ramloopinner
