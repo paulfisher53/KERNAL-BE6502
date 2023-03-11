@@ -18,8 +18,20 @@ ASCII_MASK = %11100000
 ; $0000-$00FF
 ; PAGE 0
 ; Zero page addressing
+SEARCH_CHAR = $0007             ; Search Character for Scanning BASIC Text Input
+END_CHAR = $0008                ; Search Character for Statement Termination or Quote
+TEMP_POINTER = $0016            ; Pointer to the Next Available Space in the Temporary String Stack
+TEMP_STACK = $0019              ; Descriptor Stack for Temporary Strings (4 bytes)
+GARBAGE_FLAG = $000F            ; Garbage collector flag
 TXTTAB = $002B                  ; Start of BASIC program text (2 bytes)
+FREE_MEM_TOP = $0033            ; Top of free memory space (2 bytes)
 MEM_TOP = $0037                 ; Highest location in memory
+DESC_POINTER = $0050            ; Temporary Pointer to the Current String Descriptor (3 bytes)
+HIGHDS = $0058                  ; Destination of highest element
+TEMP_DESCRIPTOR = $0062         ; Temp desriptor location  
+FAC_MO = $0064                  ; Floating point accumulator, middle order
+STRING_POINTER = $006F          ; String pointer
+DESC_STRING = $0073             ; Pointer to string or descriptior
 INPUT_DEVICE = $0099            ; Default input device (Set to 0 for the keyboard)
 OUTPUT_DEVICE = $009A           ; Default output device (Set to 3 for the screen)
 TEMP0 = $00C1                   ; 2 bytes
@@ -90,3 +102,6 @@ CONST_RAM_START = $0200         ; Unused RAM Start Location
 CONST_LLEN = 12                 ; Screen Columns (Single line mode)
 CONST_NLINES = 8                ; Screen Rows
 CONST_PIXELS = 1024             ; Pixels in a 8x8 character row
+CONST_ADPRC = 1
+CONST_BUFFER_PAGE = 2
+CONST_STR_SIZE = 3

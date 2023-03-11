@@ -26,16 +26,8 @@ SysStart:
     ldy #>CONST_MESSAGE_1 
     jsr LCDPrint    
 
-    ldx #$E
-    lda #$41
-    jsr EditorDisplayCharacter
-
     cli                         ; Enable interrupts
-    //jmp ($A000)                 ; Goto BASIC
-
-@loop
-    nop
-    jmp @loop                   ; Loop
+    jmp ($A000)                 ; Goto BASIC
 
 ; Restore kernal vectors (system)
 RestoreVectors:
